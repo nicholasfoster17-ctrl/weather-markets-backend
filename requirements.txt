@@ -1,0 +1,62 @@
+CREATE TABLE IF NOT EXISTS wallets (
+    id SERIAL PRIMARY KEY,
+    fake_cash_balance NUMERIC(12,2) NOT NULL DEFAULT 2500.00,
+    buying_power NUMERIC(12,2) NOT NULL DEFAULT 2500.00,
+    realized_pnl NUMERIC(12,2) NOT NULL DEFAULT 0.00,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS orders (
+    id SERIAL PRIMARY KEY,
+    external_id VARCHAR(64) NOT NULL,
+    market_id VARCHAR(128) NOT NULL,
+    label TEXT NOT NULL,
+    side VARCHAR(32) NOT NULL,
+    qty INTEGER NOT NULL,
+    price_cents INTEGER NOT NULL,
+    status VARCHAR(32) NOT NULL,
+    cost_dollars NUMERIC(12,2) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS fills (
+    id SERIAL PRIMARY KEY,
+    external_id VARCHAR(64) NOT NULL,
+    order_external_id VARCHAR(64) NOT NULL,
+    market_id VARCHAR(128) NOT NULL,
+    qty INTEGER NOT NULL,
+    fill_price_cents INTEGER NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS open_positions (
+    id SERIAL PRIMARY KEY,
+    external_id VARCHAR(64) NOT NULL,
+    market_id VARCHAR(128) NOT NULL,
+    label TEXT NOT NULL,
+    side VARCHAR(32) NOT NULL,
+    qty INTEGER NOT NULL,
+    avg_price_cents INTEGER NOT NULL,
+    opened_cost_dollars NUMERIC(12,2) NOT NULL,
+    opened_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS closed_positions (
+    id SERIAL PRIMARY KEY,
+    external_id VARCHAR(64) NOT NULL,
+    market_id VARCHAR(128) NOT NULL,
+    label TEXT NOT NULL,
+    side VARCHAR(32) NOT NULL,
+    qty INTEGER NOT NULL,
+    avg_price_cents INTEGER NOT NULL,
+    exit_price_cents INTEGER NOT NULL,
+    realized_pnl_dollars NUMERIC(12,2) NOT NULL,
+    closed_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS activity (
+    id SERIAL PRIMARY KEY,
+    message TEXT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
